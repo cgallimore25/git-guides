@@ -6,7 +6,12 @@
 The most common command for creating a new branch is:
 ```bash
 git checkout -b feature-branch
-```
+``` or alternatively,
+
+```bash
+git checkout -b feature-branch main
+``` when creating from `main`
+
 This single command does two operations:
 1. Creates a new branch named "feature-branch"
 2. Switches to that branch immediately
