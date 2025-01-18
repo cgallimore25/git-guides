@@ -2,8 +2,27 @@
 
 ## Basic Branch Commands and Flags
 
+The core idea behind branching is that you take a 'snapshot' of the state of your code that allows you to diverge from the main line of work without messing with that main line, essentially creating an isolated environment for you to test changes. 
+The `main` branch should always have the functional, publishable, or deployment-ready state of your code, and you can use branches from `main` to keep this sacred. 
+
+### The Command Itself
+
+With no arguments
+```bash
+git branch
+```
+
+lists all the *local* branches in your repository. 
+This distinction between *local* and *remote* will become quite important going forward. 
+
+```bash
+git branch -a
+``` 
+
+will ensure your *remote* branches are also included in this list. 
+
 ### Creating and Switching Branches
-The most common command for creating a new branch is:
+The most common command for creating a new branch on your local machine is:
 ```bash
 git checkout -b feature-branch
 ```
@@ -14,7 +33,8 @@ or alternatively,
 git checkout -b feature-branch main
 ```
 
-when creating from `main`
+when specifying creation of the branch from `main`. 
+Note that you can also substitute `main` for another branch. 
 
 This single command does two operations:
 1. Creates a new branch named "feature-branch"
@@ -25,6 +45,8 @@ It's equivalent to running these two commands:
 git branch feature-branch    # Creates the branch
 git checkout feature-branch  # Switches to the branch
 ```
+
+Thus, the first argument after `git branch` that is not a flag (e.g. `-a`) is `your-branch-name`
 
 ### Modern Alternative: The `switch` Command
 Newer versions of Git provide the `switch` command as a clearer alternative:
@@ -74,35 +96,77 @@ git pull origin main
 # 5. Merge your feature branch into main
 git merge new-feature
 
-# 6. After successful merge, delete the feature branch
+# 6. After successful merge, delete the feature branch (optional)
 git branch -d new-feature
 ```
 
-### Team-Based Workflow with Pull Requests
+### Synchronizing Local and Remotes Across 2 Machines
+
+I like to keep my remote repository on [GitHub](https://github.com/) open whenever I'm developing code. 
+This allows me to compare all of the branches that *remote* has with what's available *locally*. 
+I'm often developing across 2 machines (my office desktop and my laptop), and it's important to keep in mind that branches I create on one computer arent immediately accessible to the other computer, even after pulling the most up-to-date code from remote.
+
+Consider this scenario: When working on my office desktop, I decide I want to create a new branch `dev` for code developments. 
+I make some changes, and push to remote using the following
+
 ```bash
-# 1. Create and switch to feature branch
-git checkout -b new-feature
+# 1. Create and switch to development branch
+git checkout -b dev
 
 # 2. Do work and commit
 git add .
-git commit -m "Added new feature"
+git commit -m "Added preliminary new analysis routine"
 
 # 3. Push feature branch to GitHub
-git push -u origin new-feature
-
-# 4. Create Pull Request on GitHub
-# 5. After PR is reviewed and merged...
-
-# 6. Switch to main and get the merged changes
-git checkout main
-git pull origin main
-
-# 7. Delete local feature branch
-git branch -d new-feature
-
-# 8. Delete remote feature branch (optional)
-git push origin --delete new-feature
+git push -u origin dev
 ```
+
+I then go home, jump on my laptop, and decide to keep working on this repository. 
+First step is to pull from remote:
+```bash
+git pull origin
+```
+
+which fetches and merges the most up-to-date state of my *remote* code with my *local* code. 
+
+One of its outputs is:
+
+```bash
+From https://github.com/myusername/my-repository
+   c419748..d5a37d6  main       -> origin/main
+ * [new branch]      dev        -> origin/dev
+```
+
+but when I key in
+
+```bash
+git branch -a
+```
+
+it shows
+
+```bash
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/dev
+  remotes/origin/main
+```
+
+This is because `dev` is not yet a branch that exists *locally* on my machine. 
+The way to create the exact same branch, with the exact same name, that tracks the *remote* branch is this handy command:
+
+```bash
+git checkout --track origin/dev
+```
+
+which displays:
+
+```bash
+branch 'dev' set up to track 'origin/dev'.
+Switched to a new branch 'dev'
+```
+
+For a comprehensive explanation of how this works, see this [Stack Overflow answer](https://stackoverflow.com/questions/10002239/difference-between-git-checkout-track-origin-branch-and-git-checkout-b-branch)
 
 ## Important Notes
 
