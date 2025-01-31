@@ -1,6 +1,8 @@
 # Deleting Git Tags: Local and Remote
 
-### Q: How can I delete a Git tag that has already been pushed? [StackOverflow](https://stackoverflow.com/questions/5480258/how-can-i-delete-a-remote-tag)
+This is a markdown reproduction of this StackOverflow[^1] answer for educational purposes. 
+
+### Q: How can I delete a Git tag that has already been pushed?[^1] 
 
 ## Answer:
 
@@ -55,7 +57,7 @@ git push origin release-1.0:release-1.0
 By omitting the source ref (the part before the colon), you push 'nothing' to the destination, deleting the ref on the remote end.
 
 
-#### Examples of Full Reference Pushing
+### Examples of Full Reference Pushing
 1. Pushing a branch:
 ```bash
 # Full reference
@@ -91,3 +93,7 @@ git tag --delete v1.0
 # Delete remote tag
 git push origin :refs/tags/v1.0
 ```
+
+## References
+
+[^1]: [How can I delete a remote tag?](https://stackoverflow.com/questions/5480258/how-can-i-delete-a-remote-tag)
