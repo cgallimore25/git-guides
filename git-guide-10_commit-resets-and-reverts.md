@@ -1,6 +1,7 @@
 # Commit Revert and Reset Guide
 
 This is a markdown reproduction combining several excellent StackOverflow[^1][^2][^3] answers
+
 ### Q: How do I revert a Git repository to a previous commit?[^1]
 
 ## Answer:
